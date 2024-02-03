@@ -1,7 +1,11 @@
 package com.spring.core;
 
-import javax.sound.midi.Track;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+import javax.sound.midi.Track;
+@Component
 public class Traveler {
 //    Car car = null;
 //    Bike bike = null;
@@ -10,7 +14,9 @@ public class Traveler {
     private Vehicle vehicle;
 
     // Traveler Class/Object/Constructor requires a Vehicle Object as an argument
-    public Traveler(Vehicle vehicle){
+    @Autowired
+    //public Traveler(@Qualifier("car") Vehicle vehicle){     //@Qualifier defines which bean to actually use as a Vehicle
+    public Traveler(Vehicle vehicle){   //-- @Primary has prioritised Car class. Therefore no need to specify which bean to use.
 //        this.car = new Car();
 //        this.bike = new Bike();
 //        this.cycle = new Cycle();
