@@ -33,13 +33,28 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Override
+    public User updateUser(User user) {
+
+        User existingUser = userRepository.findById(user.getId()).get();
+
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    public User deleteUser(Long id) {
+        User deletingUser = userRepository.findById(id).get();  //-- Hold an Object of the User just to display the deleted information
+        userRepository.deleteById(id);
+        return deletingUser;    //-- Return UserObject to REST API to display deleted user's information
+    }
+
 /*    @Override
-    public User updateUser(Long id, String firstName, String lastName, String email) {
-        User user = userRepository.findById(id).get();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        return user;
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }*/
 
 

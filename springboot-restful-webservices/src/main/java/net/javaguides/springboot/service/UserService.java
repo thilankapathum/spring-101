@@ -12,5 +12,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User updateUser(Long id, String firstName, String lastName, String email);
+    User updateUser(User user);
+
+    User deleteUser(Long id);
 }

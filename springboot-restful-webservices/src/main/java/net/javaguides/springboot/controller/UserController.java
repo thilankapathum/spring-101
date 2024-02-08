@@ -41,9 +41,35 @@ public class UserController {
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
-    /*public ResponseEntity<User> updateUserById(Long userId, String firstName, String lastName, String email){
-        User user = userService.getUserByID(userId);
+    //-- Update User
+    //-- http://localhost:8080/api/users/update     //-- Need to send Updating information as a JSON
+    @PutMapping("update/{id}")
+    public ResponseEntity<User> updateUserByID(@RequestBody User user, @PathVariable("id") Long userID){
+        user.setId(userID);
+        User updatedUser = userService.updateUser(user);
+        return new ResponseEntity<>(updatedUser,HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(user,HttpStatus.CREATED);
+    //-- Update User 2
+    //-- http://localhost:8080/api/users/update?userId=1&firstName=Nick&lastName=Jonas&email=nick@jonas.com
+/*    @PostMapping("update")
+    public ResponseEntity<User> updateUserById(@RequestParam Long userId, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String email){
+        User user = userService.getUserByID(userId);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+
+        User savedUser = userService.updateUser(user);
+
+        return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
     }*/
+
+
+    //-- Delete User By ID
+    //-- http://localhost:8080/api/users/delete/3
+    @DeleteMapping("delete/{id}")
+    ResponseEntity<User> deleteUserByID(@PathVariable("id") Long id){
+        User deletedUser = userService.deleteUser(id);      //-- Assign deleted user's Object taken from UserController to a variable
+        return new ResponseEntity<>(deletedUser,HttpStatus.OK);     //-- Display the deleted user's info as a JSON in the web client
+    }
 }
