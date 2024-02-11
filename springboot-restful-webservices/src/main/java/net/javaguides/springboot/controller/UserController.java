@@ -1,6 +1,7 @@
 package net.javaguides.springboot.controller;
 
 import lombok.AllArgsConstructor;
+import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,23 @@ public class UserController {
     @Autowired  //-- Not essential because Constructor has only 1 parameter (userService)
     private UserService userService;
 
-    //-- Create User REST API
+
+    //-- Create User REST API ----------
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
         User savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
-    //-- Get User by ID REST API
+    //-- Create User REST API using DTO Class
+    @PostMapping("create")
+    public ResponseEntity<UserDto> createUserDto(@RequestBody UserDto userDto){
+        UserDto savedUser = userService.createUserDto(userDto);
+        return  new ResponseEntity<>(savedUser,HttpStatus.CREATED);
+    }
+
+
+    //-- Get User by ID REST API ----------
     //-- http://localhost:8080/api/users/1 (Postman)
     @GetMapping("{id}")
     public ResponseEntity<User> getUserByID(@PathVariable("id") Long userId){
@@ -33,15 +43,32 @@ public class UserController {
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
-    //-- Get all users REST API
+    //-- Get User by ID REST API using DTO Class
+    //-- http://localhost:8080/api/users/get/1 (Postman)
+    @GetMapping("get/{id}")
+    public ResponseEntity<UserDto> getUserByIdDto(@PathVariable("id") Long userId){
+        UserDto userDto = userService.getUserByIdDto(userId);
+        return new ResponseEntity<>(userDto,HttpStatus.OK);
+    }
+
+
+    //-- Get all users REST API ----------
     //-- http://localhost:8080/api/users/all
-    @GetMapping
+    @GetMapping("all")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
-    //-- Update User
+    //-- Get all users REST API using DTO Class
+    //-- http://localhost:8080/api/users/getall
+    @GetMapping("get-all")
+    public ResponseEntity<List<UserDto>> getAllUsersDto(){
+        List<UserDto> users = userService.getAllUsersDto();
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
+
+    //-- Update User ----------
     //-- http://localhost:8080/api/users/update     //-- Need to send Updating information as a JSON
     @PutMapping("update/{id}")
     public ResponseEntity<User> updateUserByID(@RequestBody User user, @PathVariable("id") Long userID){
@@ -65,7 +92,7 @@ public class UserController {
     }*/
 
 
-    //-- Delete User By ID
+    //-- Delete User By ID ----------
     //-- http://localhost:8080/api/users/delete/3
     @DeleteMapping("delete/{id}")
     ResponseEntity<User> deleteUserByID(@PathVariable("id") Long id){
