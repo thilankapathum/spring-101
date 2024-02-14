@@ -113,7 +113,7 @@ public class UserController {
 
 
     //-- Handle specific Exceptions related only to UserController Class
-    @ExceptionHandler(ResourceNotFoundException.class)  //-- Annotation is used to handle Specific Exceptions, return custom error response.
+    /*@ExceptionHandler(ResourceNotFoundException.class)  //-- Annotation is used to handle Specific Exceptions, return custom error response.
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
                                                                         WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
@@ -122,6 +122,6 @@ public class UserController {
                                                     "User_Not_Found" );
 
         return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
-    }
+    }*/
 
 }
