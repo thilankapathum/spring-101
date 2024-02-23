@@ -6,6 +6,7 @@ import net.javaguides.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class TodoController {
 
     //-- Add Todo REST API
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")   //-- Method Level Security
     public ResponseEntity<TodoDto> addTodo(@RequestBody TodoDto todoDto){
 
         TodoDto savedTodo = todoService.addTodo(todoDto);
@@ -29,6 +31,7 @@ public class TodoController {
 
     //-- Get Todo by ID REST API
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")      //-- Method Level Security for multiple Roles
     public ResponseEntity<TodoDto> getTodo(@PathVariable("id") Long todoId){
 
         TodoDto todoDto = todoService.getTodo(todoId);
@@ -50,6 +53,7 @@ public class TodoController {
 
     //-- Update Todo REST API
     @PutMapping("{id}")     //-- PutMapping updates whole Object
+    @PreAuthorize("hasRole('ADMIN')")   //-- Method Level Authorization
     public ResponseEntity<TodoDto> updateTodo(@RequestBody TodoDto todoDto, @PathVariable("id") Long todoId){
         TodoDto updatedTodoDto = todoService.updateTodo(todoDto,todoId);
 
@@ -59,6 +63,7 @@ public class TodoController {
 
     //-- Delete Todo REST API
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")   //-- Method Level Authorization
     public ResponseEntity<String> deleteTodo(@PathVariable("id") Long todoId){
         todoService.deleteTodo(todoId);
 
@@ -68,6 +73,7 @@ public class TodoController {
 
     //-- Complete-Todo REST API
     @PatchMapping("{id}/complete")       //-- PatchMapping updates some fields in the Object only
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")      //-- Method Level Security for multiple Roles
     public ResponseEntity<TodoDto> completeTodo(@PathVariable("id") Long todoId){
         TodoDto todoDto = todoService.completeTodo(todoId);
 
@@ -77,6 +83,7 @@ public class TodoController {
 
     //-- In-Complete-Todo REST API
     @PatchMapping("{id}/incomplete")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")      //-- Method Level Security for multiple Roles
     public ResponseEntity<TodoDto> inCompleteTodo(@PathVariable("id") Long todoId){
         TodoDto todoDto = todoService.inCompleteTodo(todoId);
 
