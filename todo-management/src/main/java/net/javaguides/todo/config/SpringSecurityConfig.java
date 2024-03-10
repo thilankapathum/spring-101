@@ -1,9 +1,12 @@
 package net.javaguides.todo.config;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -14,14 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+@Configuration  //-- Define Spring Beans
 @EnableMethodSecurity   //-- Enables Method Level Authorization (Role based)
+@AllArgsConstructor
 public class SpringSecurityConfig {
 
-    @Bean
-    public static PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    private UserDetailsService userDetailsService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {       //-- Disables Form-Based Authentication
@@ -46,7 +47,17 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){     //-- Create In-Memory user accounts with roles
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    /*    @Bean
+    public static PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }*/
+
+/*    @Bean
+    public UserDetailsService userDetailsService(){     //-- Create In-Memory user accounts with roles (Testing)
         UserDetails ramesh = User.builder()
                 .username("ramesh")
                 .password(passwordEncoder().encode("password"))
@@ -60,5 +71,5 @@ public class SpringSecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(ramesh,admin);
-    }
+    }*/
 }

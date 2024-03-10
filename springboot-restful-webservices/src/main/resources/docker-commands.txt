@@ -1,0 +1,14 @@
+docker pull mysql:latest	//Pull latest from MySQL
+
+docker network create springboot-mysql-net[network name]	//Create Docker Network to run multiple containers
+
+docker network ls	//List running docker networks
+
+docker run --name mysqldb[define container name] --network springboot-mysql-net[assign network to run] -e[provide environment variable:] MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=employeedb -d[run in detached(in background) mode] mysql[docker image name (already pulled)]
+
+docker ps [view running containers]
+
+
+docker exec -it 5b79[1st 4 letters] bash	//Enter MySQL Bash terminal
+
+mysql -u root -p	//Enter username & password to access databases (Password is root. Provided in above environmental variable)
